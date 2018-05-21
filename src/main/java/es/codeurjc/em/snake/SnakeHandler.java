@@ -1,5 +1,6 @@
 package es.codeurjc.em.snake;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.web.socket.CloseStatus;
@@ -11,13 +12,21 @@ public class SnakeHandler extends TextWebSocketHandler {
 
 	private static final String SNAKE_ATT = "snake";
 
-	private AtomicInteger snakeIds = new AtomicInteger(0);
+	private AtomicInteger snakeIds = new AtomicInteger(0);  //Sirve para dar el id a las serpientes
 
+        //Crear un ConcurrentHashMap <session, Snake>, así le podemos dar nombre a la serpiente desde el textHandler
+        
+        //Aquí hacemos un ConcurrentHashMap<string nombre, snakeGame>, que sean las salas
 	private SnakeGame snakeGame = new SnakeGame();
+        
+        //Diccionario de funciones
+        ConcurrentHashMap<String, Function> Funciones;
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+            //Creamos una serpiente, que ahora guardará el nombre. La sala ya se la daremos
 
+            /*
 		int id = snakeIds.getAndIncrement();
 
 		Snake s = new Snake(id, session);
@@ -35,10 +44,16 @@ public class SnakeHandler extends TextWebSocketHandler {
 		String msg = String.format("{\"type\": \"join\",\"data\":[%s]}", sb.toString());
 		
 		snakeGame.broadcast(msg);
+                */
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+            //Hacer un diccionario para los distintos tipos de mensajes
+            //Movs como ahora
+            //Añadirte a una sala
+            //Chat: verde jugando, rojo no jugando
+            //etc
 
 		try {
 
@@ -72,5 +87,28 @@ public class SnakeHandler extends TextWebSocketHandler {
 		
 		snakeGame.broadcast(msg);
 	}
+        
+        /*
+        this.Funciones.put("FuncionBuscarPartida", new Function(){   
+            public void ExecuteAction(String[] params,WebSocketSession session){
+                for(Map.Entry<Integer, Partida> p: Partidas.entrySet()){
+                    if(!p.getValue().Iniciada()){
+                        try {
+                            p.getValue().IniciarPartida(session,id-1);
+                            return;
+                        } catch (IOException ex) {
+                            Logger.getLogger(WebSocketManager.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                
+                }                                      
+                Partidas.put(id,new Partida(session));
+                id++;
+                        
+                
+                    
+            } 
+        });
+        */
 
 }
