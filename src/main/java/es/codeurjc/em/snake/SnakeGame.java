@@ -16,6 +16,7 @@ public class SnakeGame {
         //Si sólo hay un jugador, joder la partida
         
         //Dificultad y modo tiene que ir aquí. How? Futuro
+        private String difficulty;
 
 	private ScheduledExecutorService scheduler;
 
@@ -110,4 +111,14 @@ public class SnakeGame {
 			scheduler.shutdown();
 		}
 	}
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        public int getNum(){
+            return numSnakes.get();
+        }
+        
+        public String getDif(){
+            return difficulty;
+        }
 }

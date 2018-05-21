@@ -1,5 +1,6 @@
 package es.codeurjc.em.snake;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,7 +18,8 @@ public class SnakeHandler extends TextWebSocketHandler {
         //Crear un ConcurrentHashMap <session, Snake>, así le podemos dar nombre a la serpiente desde el textHandler
         
         //Aquí hacemos un ConcurrentHashMap<string nombre, snakeGame>, que sean las salas
-	private SnakeGame snakeGame = new SnakeGame();
+	//private SnakeGame snakeGame = new SnakeGame();
+        private ConcurrentHashMap<String, SnakeGame> snakeGame;
         
         //Diccionario de funciones
         ConcurrentHashMap<String, Function> Funciones;
@@ -77,6 +79,7 @@ public class SnakeHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
+            /*
 		System.out.println("Connection closed. Session " + session.getId());
 
 		Snake s = (Snake) session.getAttributes().get(SNAKE_ATT);
@@ -86,6 +89,7 @@ public class SnakeHandler extends TextWebSocketHandler {
 		String msg = String.format("{\"type\": \"leave\", \"id\": %d}", s.getId());
 		
 		snakeGame.broadcast(msg);
+            */
 	}
         
         /*
@@ -110,5 +114,31 @@ public class SnakeHandler extends TextWebSocketHandler {
             } 
         });
         */
+        
+        public ArrayList<String[]> getPartidas(){
+            //Esto está mal, debería devolver el nombre de la partida, dificultad, numJugadores
+            /*
+            ArrayList<SnakeGame> aux = new ArrayList<>();
+            
+            for(SnakeGame s : snakeGame.values()){
+                aux.add(s);
+            }
+            
+            return aux;*/
+            
+            ArrayList<String[]> sol = new ArrayList<>();
+            String[] aux = new String[3];
+            
+            for(String s : snakeGame.keySet()){
+                aux[0] = s;
+                aux[1] = snakeGame.get(s).getDif();
+                aux[2] = "" + snakeGame.get(s).getNum();
+                
+                sol.add(aux);
+                aux = new String[3];
+            }
+            
+            return sol;
+        }
 
 }
